@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": ["./types.d.ts"],
+    "typeRoots": ["./src/types"],
     "forceConsistentCasingInFileNames": true
   }
 }

@@ -1,5 +1,5 @@
 import { Movements, goals } from 'mineflayer-pathfinder';
-import { Position } from '../../types';
+import { Position } from '../types';
 const goalNear = goals.GoalNear;
 
 export const gotoLocation = (position: Position) => {

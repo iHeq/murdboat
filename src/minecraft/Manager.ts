@@ -1,5 +1,5 @@
-import { mineflayer as viewer } from 'prismarine-viewer';
 import { onLogin, onEnd, onKicked } from './StateHandler';
+import { mineflayer as viewer } from 'prismarine-viewer';
 import { pathfinder } from 'mineflayer-pathfinder';
 import { ChatMessage } from 'prismarine-chat';
 import { onMessage } from './ChatHandler';
