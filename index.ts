@@ -1,4 +1,4 @@
-import { connect } from './src/MinecraftManager';
+import { connect } from './src/minecraft/Manager';
 
 global.state = 'offline';
 connect();

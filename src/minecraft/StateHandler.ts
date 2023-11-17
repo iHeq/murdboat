@@ -1,4 +1,4 @@
-import { connect } from './MinecraftManager';
+import { connect } from './Manager';
 
 export const onLogin = () => {
   console.log('Client ready, logged in as ' + global.bot.username);
