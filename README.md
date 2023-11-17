@@ -8,6 +8,6 @@ A minecraft bot that runs arround and plays [Hypixel's](https://hypixel.net) Mur
 
 ## To-Do List
 
-- [] Make a readme.
-- [] Multi account support.
-- [] More controlls for the bot.
+- [ ] Make a readme.
+- [ ] Multi account support.
+- [ ] More controlls for the bot.
