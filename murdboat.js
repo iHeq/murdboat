@@ -1,33 +1,29 @@
-import mineflayer from 'mineflayer';
-import chalk from 'chalk';
-import mineflayerPathfinder from 'mineflayer-pathfinder';
-import pkg from 'mineflayer-pathfinder';
-const { Pathfinder, goals } = pkg;
-const { pathfinder, Movements, GoalNear, GoalBlock, GoalXZ, GoalY, GoalInvert, GoalFollow, GoalBreakBlock } =
-  mineflayerPathfinder;
-import { getChatEvents } from './utils/getChatEvents.mjs';
-import { getLocation } from './utils/getLocation.mjs';
-import { readFile } from 'fs/promises';
-import readline from 'readline';
+const { getChatEvents } = require('./src/getChatEvents.js');
+const { getLocation } = require('./src/getLocation.js');
+const mineflayer = require('mineflayer');
+const readline = require('readline');
+const chalk = require('chalk');
+const fs = require('fs');
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-// Setup global bot arguments
-let botArgs = {
-  host: 'mc.hypixel.net',
-  version: '1.8.9',
+const ACCOUNT = JSON.parse(fs.readFileSync('./accounts.json', 'utf-8'));
+
+// Init containers and params
+const bots = [];
+const botNames = [];
+const MASK = {};
+const params = {
+  showClickEvents: true,
+  showHoverEvents: false,
+  showName: false,
+  showMask: false,
 };
-
-var pi = 3.14159;
-
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-var moveinterval = 1; // 2 second movement interval
-var maxrandom = 5; // 0-5 seconds added to movement interval (randomly)
+let currentTask = null;
+const defaultLobby = 'duels';
 
 class MCBot {
   // Constructor
@@ -35,9 +31,8 @@ class MCBot {
     this.username = username;
     this.password = password;
     this.auth = auth;
-    this.host = botArgs['host'];
-    this.port = botArgs['port'];
-    this.version = botArgs['version'];
+    this.host = 'mc.hypixel.net'
+    this.version = '1.8.9'
 
     this.botLocation = {
       server: null,
@@ -125,7 +120,7 @@ class MCBot {
           this.bot.chat(input);
           break;
         case 'murdbot':
-          const currentTask = 'MM BOT';
+          currentTask = 'MM BOT';
           this.bot.chat('/play murder_classic');
 
           while (2 > 1) {
@@ -170,13 +165,13 @@ class MCBot {
             if (message.includes('You get your')) this.bot.chat('/play murder_classic');
             return;
           });
-
+          break;
         case 'sbcheck':
           console.log(this.bot.scoreboard);
-
+          break;
         case 'rq':
           this.bot.chat('/play murder_classic');
-
+          break;
         case 'fail':
           this.bot.on('messagestr', (message) => {
             if (message.includes('Detective:')) this.bot.chat('/play murder_classic');
@@ -193,7 +188,7 @@ class MCBot {
   initEvents() {
     this.bot.on('login', async () => {
       // Display connection info
-      let botSocket = this.bot._client.socket;
+      const botSocket = this.bot._client.socket;
       this.log(chalk.ansi256(34)(`Logged in to ${botSocket.server ? botSocket.server : botSocket._host}`));
 
       // Add name to list
@@ -256,8 +251,8 @@ class MCBot {
         return;
       }
 
-      let ansiText = this.mask(jsonMsg.toAnsi());
-      let rawText = jsonMsg.toString();
+      const ansiText = this.mask(jsonMsg.toAnsi());
+      const rawText = jsonMsg.toString();
 
       // Anti "Slow down"
       if (rawText == 'Woah there, slow down!') {
@@ -273,7 +268,7 @@ class MCBot {
       }
 
       // Check for location JSON
-      let [newBotLocation, validJSON] = this.getLocation(rawText);
+      const [newBotLocation, validJSON] = this.getLocation(rawText);
 
       if (JSON.stringify(this.botLocation) != JSON.stringify(newBotLocation) && validJSON) {
         // Update location
@@ -315,15 +310,15 @@ class MCBot {
       }
 
       // Get events
-      let [messageClickEvents, messageHoverEvents] = this.getChatEvents(jsonMsg);
+      const [messageClickEvents, messageHoverEvents] = this.getChatEvents(jsonMsg);
 
       if (this.botLocation['server'] == 'limbo') {
         this.bot.chat('/lobby duels');
       }
 
       // Click and Hover events
-      let clickEvents = params['showClickEvents'] && messageClickEvents.length;
-      let hoverEvents = params['showHoverEvents'] && messageHoverEvents.length;
+      const clickEvents = params['showClickEvents'] && messageClickEvents.length;
+      const hoverEvents = params['showHoverEvents'] && messageHoverEvents.length;
 
       if (clickEvents && hoverEvents) {
         console.log(messageClickEvents, messageHoverEvents);
@@ -349,26 +344,8 @@ class MCBot {
   }
 }
 
-// Import accounts
-const ACCOUNT = JSON.parse(await readFile(new URL('./secrets/ACCOUNT.json', import.meta.url)));
-
-// Init containers and params
-let bots = [];
-let botNames = [];
-let MASK = {};
-let params = {
-  showClickEvents: true,
-  showHoverEvents: false,
-  showName: false,
-  showMask: false,
-};
-let currentTask = null;
-let defaultLobby = 'duels';
-
-// Create bots
 for (let i = 0; i < ACCOUNT.length; i++) {
-  let ACC = ACCOUNT[i];
-  let newBot = new MCBot(ACC.username, ACC.password, ACC.auth);
+  const ACC = ACCOUNT[i];
+  const newBot = new MCBot(ACC.username, ACC.password, ACC.auth);
   bots.push(newBot);
-  //MASK[ACC.ign] = `murdbot_nr${String(i+1).padStart(3, '0')}`;
 }

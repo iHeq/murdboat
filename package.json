@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint:check": "npx eslint .",
+    "lint": "npx eslint . --fix",
     "prettier": "npx prettier --write .",
     "prettier:check": "npx prettier --check ."
   },
@@ -16,6 +18,8 @@
     "pathfinder": "^0.3.0-1"
   },
   "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-plugin-import": "^2.29.0",
     "prettier": "^3.1.0"
   }
 }
