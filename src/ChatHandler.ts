@@ -1,4 +1,5 @@
 import { ChatMessage } from 'prismarine-chat';
+import { findNearestDroppedGold } from './EventHandler';
 
 function isLobbyJoinMessage(message: string) {
   return (message.endsWith(' the lobby!') || message.endsWith(' the lobby! <<<')) && message.includes('[MVP+');
@@ -58,6 +59,7 @@ export const onMessage = (message: ChatMessage) => {
     global.state = 'IN_MURDERY_MYSTERY_QUEUE';
   } else if (isInGameMessage(rawMessage)) {
     global.state = 'IN_MURDER_MYSTERY_GAME';
+    findNearestDroppedGold();
   } else if (isMurdererMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
     global.state = 'IN_MURDERY_MYSTERY_QUEUE';

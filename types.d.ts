@@ -13,3 +13,8 @@ declare global {
   // eslint-disable-next-line no-var
 }
 
+export interface Position {
+  x: number;
+  y: number;
+  z: number;
+}

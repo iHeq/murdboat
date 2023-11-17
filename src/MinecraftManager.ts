@@ -1,4 +1,5 @@
 import { onLogin, onEnd, onKicked } from './StateHandler';
+import { pathfinder } from 'mineflayer-pathfinder';
 import { ChatMessage } from 'prismarine-chat';
 import { onMessage } from './ChatHandler';
 import { createBot } from 'mineflayer';
@@ -20,6 +21,7 @@ export const connect = () => {
   global.exactDelay = 0;
 
   global.bot = createBotConnection();
+  global.bot.loadPlugin(pathfinder);
 
   global.bot.on('login', () => onLogin());
   global.bot.on('end', (message: string) => onEnd(message));
