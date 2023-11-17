@@ -48,7 +48,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
       const embed = new EmbedBuilder()
         .setColor('#ff538e')
         .setDescription(
-          `Username: \`${global.bot.username} (${global.bot.player.uuid})\`\nLocation: \`X: ${global.bot.entity.position.x} Y: ${global.bot.entity.position.y} Z: ${global.bot.entity.position.z}\`\nPing: \`${global.bot.player.ping}\`\nVersion: \`${global.bot.version}\``
+          `Username: \`${global.bot.username} (${global.bot.player.uuid})\`\nLocation: \`X: ${global.bot.entity.position.x} Y: ${global.bot.entity.position.y} Z: ${global.bot.entity.position.z}\`\nPing: \`${global.bot.player.ping}\`\nVersion: \`${global.bot.version}\`\n\n`
         );
       await interaction.reply({ embeds: [embed] });
     }
