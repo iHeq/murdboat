@@ -27,6 +27,7 @@ declare global {
   var exactDelay: number;
   var bot: Bot;
   var client: Client;
+  var searching: boolean;
 }
 
 export interface Position {

@@ -7,7 +7,7 @@ export const deployEvents = async (client: Client) => {
   try {
     global.oldState.discord = global.state.discord;
     global.state.discord = 'DEPLOYING_EVENTS';
-    const eventFiles = readdirSync('./src/discord/events').filter((file) => file.endsWith('.ts'));
+    const eventFiles = readdirSync('./src/discord/events');
     let count = eventFiles.length;
 
     for (const file of eventFiles) {
@@ -34,7 +34,7 @@ export const deployCommands = async (client: Client) => {
     global.oldState.discord = global.state.discord;
     global.state.discord = 'DEPLOYING_COMMANDS';
     client.commands = new Collection<string, SlashCommand>();
-    const commandFiles = readdirSync('./src/discord/commnads').filter((file) => file.endsWith('.ts'));
+    const commandFiles = readdirSync('./src/discord/commands');
     const commands = [];
 
     for (const file of commandFiles) {
@@ -61,7 +61,10 @@ export const deployCommands = async (client: Client) => {
 };
 
 export const sendMessage = async (channel: 'debug' | 'log', message: string) => {
-  await (global.client.channels.cache.get(discord.channels[channel]) as TextChannel).send({
-    content: message,
-  });
+  console.log(discord.channels[channel]);
+  let textChannel = null;
+  if (channel === 'log') textChannel = global.client.channels.cache.get(discord.channels.log) as TextChannel;
+  if (channel === 'debug') textChannel = global.client.channels.cache.get(discord.channels.debug) as TextChannel;
+  if (textChannel == null) return;
+  textChannel.send({ content: message });
 };

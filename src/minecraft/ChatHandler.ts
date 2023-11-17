@@ -13,10 +13,10 @@ function isDetectiveMessage(message: string) {
 
 function isDeadMessage(message: string) {
   return (
-    message.startsWith('YOU DIED! A Murderer stabbed you!') ||
-    message.startsWith('YOU DIED! The Murderer stabbed you!') ||
-    message.startsWith('YOU DIED! A Murderer threw their knifw at you!') ||
-    message.startsWith('YOU DIED! The Murderer threw their knifw at you!')
+    message.endsWith('YOU DIED! A Murderer stabbed you!') ||
+    message.endsWith('YOU DIED! The Murderer stabbed you!') ||
+    message.endsWith('YOU DIED! A Murderer threw their knifw at you!') ||
+    message.endsWith('YOU DIED! The Murderer threw their knifw at you!')
   );
 }
 
@@ -26,12 +26,12 @@ function isDynamicLobbyMessage(message: string) {
 
 function isInGameMessage(message: string) {
   return (
-    message.startsWith('Teaming with the Murderers is not allowed!') ||
-    message.startsWith('Teaming with the Murderer is not allowed!') ||
-    (message.startsWith('The Murderers get their swords in') && message.endsWith('seconds!')) ||
-    (message.startsWith('The Murderer get their swords in') && message.endsWith('seconds!')) ||
-    message.startsWith('The Murderers have received your sword!') ||
-    message.startsWith('The Murderer have received your sword!')
+    message.endsWith('Teaming with the Murderers is not allowed!') ||
+    message.endsWith('Teaming with the Murderer is not allowed!') ||
+    (message.endsWith('The Murderers get their swords in') && message.endsWith('seconds!')) ||
+    (message.endsWith('The Murderer get their swords in') && message.endsWith('seconds!')) ||
+    message.endsWith('The Murderers have received your sword!') ||
+    message.endsWith('The Murderer have received your sword!')
   );
 }
 
@@ -46,6 +46,8 @@ function isMurdererMessage(message: string) {
 
 export const onMessage = (message: ChatMessage) => {
   const rawMessage = message.toString();
+
+  console.log(isInGameMessage(rawMessage));
 
   if (debug) sendMessage('debug', rawMessage);
 
@@ -77,5 +79,10 @@ export const onMessage = (message: ChatMessage) => {
     global.oldState.minecraft = global.state.minecraft;
     global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
     sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
+  } else if (rawMessage.startsWith('<kathund> find gold')) {
+    console.log(rawMessage);
+    global.searching = true;
+  } else if (rawMessage.startsWith('stop finding')) {
+    global.searching = false;
   }
 };

@@ -1,26 +1,29 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-export const data = new SlashCommandBuilder().setName('bot').addSubcommand((subcommand) =>
-  subcommand
-    .setName('info')
-    .setDescription('Dispalys info about that bot!')
-    .addStringOption((option) =>
-      option
-        .setName('type')
-        .setDescription('The type of info you want to view')
-        .setRequired(false)
-        .addChoices(
-          { name: 'username', value: 'username' },
-          { name: 'uuid', value: 'uuid' },
-          { name: 'version', value: 'version' },
-          { name: 'location', value: 'location' },
-          { name: 'location x', value: 'locationX' },
-          { name: 'location y', value: 'locationY' },
-          { name: 'location z', value: 'locationZ' },
-          { name: 'ping', value: 'ping' }
-        )
-    )
-);
+export const data = new SlashCommandBuilder()
+  .setName('bot')
+  .setDescription('Gets the currnet status of the bot')
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName('info')
+      .setDescription('Dispalys info about that bot!')
+      .addStringOption((option) =>
+        option
+          .setName('type')
+          .setDescription('The type of info you want to view')
+          .setRequired(false)
+          .addChoices(
+            { name: 'username', value: 'username' },
+            { name: 'uuid', value: 'uuid' },
+            { name: 'version', value: 'version' },
+            { name: 'location', value: 'location' },
+            { name: 'location x', value: 'locationX' },
+            { name: 'location y', value: 'locationY' },
+            { name: 'location z', value: 'locationZ' },
+            { name: 'ping', value: 'ping' }
+          )
+      )
+  );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const subcommand = interaction.options.getSubcommand();

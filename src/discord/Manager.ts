@@ -12,6 +12,7 @@ export const connect = () => {
       GatewayIntentBits.Guilds,
     ],
   });
+  global.client = client;
 
   deployCommands(client);
 

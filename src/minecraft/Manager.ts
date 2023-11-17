@@ -7,7 +7,7 @@ import { createBot } from 'mineflayer';
 
 function createBotConnection() {
   return createBot({
-    host: 'mc.hypixel.net',
+    host: '192.168.0.228',
     port: 25565,
     username: 'username',
     auth: 'microsoft',
