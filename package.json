@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier": "npx prettier --write .",
+    "prettier:check": "npx prettier --check ."
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +14,8 @@
     "mineflayer-death-event": "^1.0.0",
     "mineflayer-pathfinder": "^2.4.5",
     "pathfinder": "^0.3.0-1"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0"
   }
 }
