@@ -12,7 +12,6 @@ const rl = readline.createInterface({
 
 const ACCOUNT = JSON.parse(fs.readFileSync('./accounts.json', 'utf-8'));
 
-// Init containers and params
 const bots = [];
 const botNames = [];
 const MASK = {};
@@ -23,16 +22,14 @@ const params = {
   showMask: false,
 };
 let currentTask = null;
-const defaultLobby = 'duels';
 
 class MCBot {
-  // Constructor
   constructor(username, password, auth) {
     this.username = username;
     this.password = password;
     this.auth = auth;
-    this.host = 'mc.hypixel.net'
-    this.version = '1.8.9'
+    this.host = 'mc.hypixel.net';
+    this.version = '1.8.9';
 
     this.botLocation = {
       server: null,
@@ -41,15 +38,12 @@ class MCBot {
       map: null,
     };
 
-    // Initialize the bot
     this.initBot();
 
-    // Import external functions
     this.getChatEvents = getChatEvents;
     this.getLocation = getLocation;
   }
 
-  // Init bot instance
   initBot() {
     this.bot = mineflayer.createBot({
       username: this.username,
@@ -61,39 +55,27 @@ class MCBot {
       hideErrors: true,
     });
 
-    // Initialize bot events
     this.initEvents();
     this.listenToUserInput();
   }
 
-  // Logger
   log(...msg) {
-    // Show masked name
     if (params['showName'] && params['showMask']) {
       console.log(this.mask(`[${this.bot.username}] ` + msg[0]));
-    }
-
-    // Show name
-    else if (params['showName']) {
+    } else if (params['showName']) {
       console.log(`[${this.bot.username}] ` + msg[0]);
-    }
-
-    // Don't show name
-    else {
+    } else {
       console.log(msg[0]);
     }
   }
 
-  // Mask
   mask(msg) {
-    //   Mask
     for (const key in MASK) {
       msg = msg.replace(new RegExp(key, 'gi'), MASK[key]);
     }
     return msg;
   }
 
-  // Event for console input
   listenToUserInput() {
     rl.prompt(true);
     rl.on('line', async (input) => {
@@ -184,30 +166,16 @@ class MCBot {
     });
   }
 
-  // Init bot events
   initEvents() {
     this.bot.on('login', async () => {
-      // Display connection info
       const botSocket = this.bot._client.socket;
       this.log(chalk.ansi256(34)(`Logged in to ${botSocket.server ? botSocket.server : botSocket._host}`));
-
-      // Add name to list
       botNames.push(this.bot.username);
     });
 
     this.bot.on('end', async (reason) => {
       this.log(chalk.red(`Disconnected: ${reason}`));
-
-      // Bot peacefully disconnected
-      if (reason == 'disconnect.quitting') {
-        return;
-      }
-      // Unhandled disconnections
-      else {
-        //
-      }
-
-      // Attempt to reconnect
+      if (reason == 'disconnect.quitting') return;
       setTimeout(() => this.initBot(), 5000);
     });
 
@@ -218,8 +186,6 @@ class MCBot {
 
       this.bot.chat('/locraw');
 
-      // await this.bot.waitForTicks(8);
-
       switch (currentTask) {
         case 'murdbot':
           this.bot.on('messagestr', (message) => {
@@ -229,7 +195,6 @@ class MCBot {
             if (message.includes('You get your')) this.bot.chat('/play murder_classic');
             return;
           });
-
           break;
 
         default:
@@ -246,32 +211,25 @@ class MCBot {
     });
 
     this.bot.on('message', async (jsonMsg) => {
-      // Avoid Hypixel Cancer
-      if (jsonMsg['extra'] && jsonMsg['extra'].length === 100) {
-        return;
-      }
+      if (jsonMsg['extra'] && jsonMsg['extra'].length === 100) return;
 
       const ansiText = this.mask(jsonMsg.toAnsi());
       const rawText = jsonMsg.toString();
 
-      // Anti "Slow down"
       if (rawText == 'Woah there, slow down!') {
         await this.bot.waitForTicks(200);
         switch (currentTask) {
           case 'lobby_override_example':
-            //
             break;
           default:
-            this.bot.chat(`/lobby ${defaultLobby}`);
+            this.bot.chat(`/lobby mm`);
             break;
         }
       }
 
-      // Check for location JSON
       const [newBotLocation, validJSON] = this.getLocation(rawText);
 
       if (JSON.stringify(this.botLocation) != JSON.stringify(newBotLocation) && validJSON) {
-        // Update location
         this.botLocation = newBotLocation;
         this.log(
           `Current location: {${this.botLocation['server']}${
@@ -281,26 +239,20 @@ class MCBot {
           }}`
         );
 
-        // Anti Limbo
         if (this.botLocation['server'] == 'limbo') {
           switch (currentTask) {
             case 'lobby_override_example':
-              //
               break;
             default:
-              this.bot.chat(`/lobby ${defaultLobby}`);
+              this.bot.chat(`/lobby mm`);
               this.bot.waitForTicks(5);
               break;
           }
         }
       }
 
-      // Don't show messages if JSON
-      if (validJSON) {
-        return;
-      }
+      if (!validJSON) return;
 
-      // Show messages
       if (params['showName'] && params['showMask']) {
         process.stdout.write(this.mask(`[${this.bot.username}] ${ansiText}`));
       } else if (params['showName']) {
@@ -309,14 +261,10 @@ class MCBot {
         process.stdout.write(ansiText);
       }
 
-      // Get events
       const [messageClickEvents, messageHoverEvents] = this.getChatEvents(jsonMsg);
 
-      if (this.botLocation['server'] == 'limbo') {
-        this.bot.chat('/lobby duels');
-      }
+      if (this.botLocation['server'] == 'limbo') this.bot.chat('/lobby mm');
 
-      // Click and Hover events
       const clickEvents = params['showClickEvents'] && messageClickEvents.length;
       const hoverEvents = params['showHoverEvents'] && messageHoverEvents.length;
 
@@ -326,18 +274,13 @@ class MCBot {
         console.log(messageClickEvents);
       } else if (hoverEvents) {
         console.log(messageHoverEvents);
-      } else {
-        console.log();
       }
     });
 
     this.bot.on('error', async (err) => {
-      // Connection error
       if (err.code == 'ECONNREFUSED') {
         this.log(`Failed to connect to ${err.address}:${err.port}`);
-      }
-      // Unhandled errors
-      else {
+      } else {
         this.log(`Unhandled error: ${err}`);
       }
     });
