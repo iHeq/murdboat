@@ -51,21 +51,31 @@ export const onMessage = (message: ChatMessage) => {
 
   if (isLobbyJoinMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
-    global.state = 'IN_MURDERY_MYSTERY_QUEUE';
+    global.oldState.minecraft = global.state.minecraft;
+    global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
+    sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
   } else if (isDetectiveMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
-    global.state = 'IN_MURDERY_MYSTERY_QUEUE';
+    global.oldState.minecraft = global.state.minecraft;
+    global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
+    sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
   } else if (isDeadMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
-    global.state = 'IN_MURDERY_MYSTERY_QUEUE';
+    global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
   } else if (isDynamicLobbyMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
-    global.state = 'IN_MURDERY_MYSTERY_QUEUE';
+    global.oldState.minecraft = global.state.minecraft;
+    global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
+    sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
   } else if (isInGameMessage(rawMessage)) {
-    global.state = 'IN_MURDER_MYSTERY_GAME';
+    global.oldState.minecraft = global.state.minecraft;
+    global.state.minecraft = 'IN_MURDER_MYSTERY_GAME';
+    sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
     findNearestDroppedGold();
   } else if (isMurdererMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');
-    global.state = 'IN_MURDERY_MYSTERY_QUEUE';
+    global.oldState.minecraft = global.state.minecraft;
+    global.state.minecraft = 'IN_MURDERY_MYSTERY_QUEUE';
+    sendMessage('log', `Minecraft State Changed | \`${global.oldState.minecraft}\` to \`${global.state.minecraft}\``);
   }
 };

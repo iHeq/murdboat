@@ -5,6 +5,8 @@ import { readdirSync } from 'fs';
 
 export const deployEvents = async (client: Client) => {
   try {
+    global.oldState.discord = global.state.discord;
+    global.state.discord = 'DEPLOYING_EVENTS';
     const eventFiles = readdirSync('./src/discord/events').filter((file) => file.endsWith('.ts'));
     let count = eventFiles.length;
 
@@ -18,6 +20,8 @@ export const deployEvents = async (client: Client) => {
 
       client.on(name, event.execute.bind(null));
       console.log(`Successfully loaded ${name}`);
+      global.oldState.discord = global.state.discord;
+      global.state.discord = 'DEPLOYED_EVENTS';
     }
     console.log(`Successfully loaded ${count} event(s).`);
   } catch (error) {
@@ -27,6 +31,8 @@ export const deployEvents = async (client: Client) => {
 
 export const deployCommands = async (client: Client) => {
   try {
+    global.oldState.discord = global.state.discord;
+    global.state.discord = 'DEPLOYING_COMMANDS';
     client.commands = new Collection<string, SlashCommand>();
     const commandFiles = readdirSync('./src/discord/commnads').filter((file) => file.endsWith('.ts'));
     const commands = [];
@@ -44,6 +50,8 @@ export const deployCommands = async (client: Client) => {
     try {
       await rest.put(Routes.applicationCommands(discord.clientId), { body: commands });
       console.log(`Successfully reloaded ${commands.length} application command(s).`);
+      global.oldState.discord = global.state.discord;
+      global.state.discord = 'DEPLOYED_COMMANDS';
     } catch (error) {
       console.log(error);
     }

@@ -15,8 +15,14 @@ declare module 'discord.js' {
   }
 }
 
+interface state {
+  discord: string;
+  minecraft: string;
+}
+
 declare global {
-  var state: string;
+  var oldState: state;
+  var state: state;
   var loginAttempts: number;
   var exactDelay: number;
   var bot: Bot;

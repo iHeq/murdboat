@@ -1,7 +1,7 @@
 import { gotoLocation } from './functions';
 
 export const findNearestDroppedGold = () => {
-  global.state = 'IN_MURDER_MYSTERY_GAME:FINDING_GOLD';
+  global.state.minecraft = 'IN_MURDER_MYSTERY_GAME:FINDING_GOLD';
   const closestGoldIngot = global.bot.nearestEntity((entity) => {
     return entity.name === 'Gold Ingot';
   });
