@@ -6,14 +6,15 @@
   "scripts": {
     "build": "npx tsc",
     "start": "npx ts-node index.ts",
-    "lint:check": "npx eslint .",
-    "lint": "npx eslint . --fix",
-    "prettier": "npx prettier --write .",
-    "prettier:check": "npx prettier --check ."
+    "lint:check": "npx eslint src/ index.ts",
+    "lint": "npx eslint --fix src/ index.ts",
+    "prettier": "npx prettier --write src/ index.ts",
+    "prettier:check": "npx prettier --check src/ index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "discord.js": "^14.14.1",
     "mineflayer": "^4.14.0",
     "mineflayer-pathfinder": "^2.4.5",
     "prismarine-chat": "^1.9.1",

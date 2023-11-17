@@ -1,0 +1,11 @@
+{
+  "debug": true,
+  "discord": {
+    "token": "DISCORD_BOT_TOKEN",
+    "clientId": "DISCORD_BOT_TOKEN",
+    "channels": {
+      "debug": "DISCORD_LOG_CHANNEL_ID",
+      "log": "DISCORD_LOG_CHANNEL_ID"
+    }
+  }
+}

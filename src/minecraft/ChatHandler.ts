@@ -1,5 +1,7 @@
-import { ChatMessage } from 'prismarine-chat';
 import { findNearestDroppedGold } from './EventHandler';
+import { ChatMessage } from 'prismarine-chat';
+import { debug } from '../../config.json';
+import { sendMessage } from '../discord/functions';
 
 function isLobbyJoinMessage(message: string) {
   return (message.endsWith(' the lobby!') || message.endsWith(' the lobby! <<<')) && message.includes('[MVP+');
@@ -44,6 +46,8 @@ function isMurdererMessage(message: string) {
 
 export const onMessage = (message: ChatMessage) => {
   const rawMessage = message.toString();
+
+  if (debug) sendMessage('debug', rawMessage);
 
   if (isLobbyJoinMessage(rawMessage)) {
     global.bot.chat('/play murder_classic');

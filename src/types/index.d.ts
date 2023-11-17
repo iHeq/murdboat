@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-var */
+import { Collection, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord';
+import { Client } from 'discord.js';
 import { Bot } from 'mineflayer';
 
+export interface SlashCommand {
+  data: SlashCommandBuilder;
+  // eslint-disable-next-line
+  execute: (interaction: ChatInputCommandInteraction) => void;
+}
+declare module 'discord.js' {
+  export interface Client {
+    commands: Collection<string, SlashCommand>;
+  }
+}
+
 declare global {
-  // eslint-disable-next-line no-var
   var state: string;
-  // eslint-disable-next-line no-var
   var loginAttempts: number;
-  // eslint-disable-next-line no-var
   var exactDelay: number;
-  // eslint-disable-next-line no-var
   var bot: Bot;
-  // eslint-disable-next-line no-var
+  var client: Client;
 }
 
 export interface Position {
