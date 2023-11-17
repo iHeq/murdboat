@@ -1,3 +1,4 @@
+import { mineflayer as viewer } from 'prismarine-viewer';
 import { onLogin, onEnd, onKicked } from './StateHandler';
 import { pathfinder } from 'mineflayer-pathfinder';
 import { ChatMessage } from 'prismarine-chat';
@@ -27,4 +28,8 @@ export const connect = () => {
   global.bot.on('end', (message: string) => onEnd(message));
   global.bot.on('kicked', (message: string) => onKicked(message));
   global.bot.on('message', (message: ChatMessage) => onMessage(message));
+  global.bot.on('spawn', () => {
+    console.log('Bot can now be viewed from http://localhost:3000/');
+    viewer(global.bot, { port: 3000, firstPerson: true });
+  });
 };

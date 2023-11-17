@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "mineflayer": "^4.14.0",
-    "prismarine-chat": "^1.9.1"
+    "prismarine-chat": "^1.9.1",
+    "prismarine-viewer": "^1.25.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.11.0",
